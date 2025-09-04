@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #000000, #ff69b4);
+      color: #ffffff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      margin-top: 10vh;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 3rem;
+      animation: glow 2s infinite alternate;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.5rem;
+      color: #ffccff;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .btn {
+      background-color: #ff69b4;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+      animation: pulse 1.5s infinite;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background-color: #d63384;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+      to { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff1493; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .flowing-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 10%, transparent 70%),
+        radial-gradient(circle, rgba(255, 20, 147, 0.3) 20%, transparent 80%);
+      animation: fadeIn 5s infinite alternate;
+      z-index: 1;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    .celebration-img {
+      width: 80%;
+      max-width: 300px;
+      margin-top: 20px;
+      border-radius: 10px;
+      animation: fadeIn 2s ease-in-out, floating 3s infinite ease-in-out;
+      transition: transform 0.3s;
+    }
+
+    .celebration-img:hover {
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flowing-bg"></div>
+  <canvas id="confetti"></canvas>
+  <div class="container">
+    <h1>🎉 Happy birthday to you my batterhalf ❤‍🩹</h1>
+    <h2>Happy Birthday Anisha Farhana 💐❤‍🩹</h2>
+    <p>May Allah bless you 🤲✨ 
+        I wish all your dreams come true 🌙💫 and your day be filled with joy 😇🌸,
+         health 🩺🍀, and endless happiness 😍🎉.
+          You deserve the best of everything today and always 💖🌟</p>
+    <h2>This is your best pic according to me</h2>
+    <img src="photo/anisha1.jpg" alt="Anisha's birthday Celebration" class="celebration-img">
+   
+    <p class="quote">"Empowered women empower the world."</p>
+    <button class="btn" onclick="generateQuote()">💬 Get Inspired</button>
+    <button class="btn" onclick="toggleMusic()">🎶 Celebrate with Music</button>
+
+    <!-- autoplay and loop added -->
+    <audio id="celebration-song" src="music/sunny.mp3" preload="auto" autoplay loop></audio>
+  </div>
+
+  <script>
+    const quotes = [
+      "You are strong, beautiful, and unstoppable!",
+      "A woman is the full circle. Within her is the power to create, nurture, and transform.",
+      "She believed she could, so she did!",
+      "No force is more powerful than a woman determined to rise.",
+      "Your voice matters. Your dreams are valid. Keep shining!"
+    ];
+
+    function generateQuote() {
+      const quoteEl = document.querySelector('.quote');
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      quoteEl.textContent = quotes[randomIndex];
+    }
+
+    function toggleMusic() {
+      const song = document.getElementById("celebration-song");
+      if (song.paused) {
+        song.play();
+      } else {
+        song.pause();
+      }
+    }
+
+    function initConfetti() {
+      const confetti = document.getElementById("confetti");
+      const ctx = confetti.getContext("2d");
+      confetti.width = window.innerWidth;
+      confetti.height = window.innerHeight;
+      let particles = [];
+
+      function createParticles() {
+        particles = Array.from({ length: 100 }, () => ({
+          x: Math.random() * confetti.width,
+          y: Math.random() * confetti.height,
+          size: Math.random() * 6 + 2,
+          speedY: Math.random() * 3 + 1,
+          color: hsl(${Math.random() * 360}, 100%, 70%)
+        }));
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, confetti.width, confetti.height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          if (p.y > confetti.height) p.y = 0;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(drawParticles);
+      }
+
+      createParticles();
+      drawParticles();
+
+      window.addEventListener("resize", () => {
+        confetti.width = window.innerWidth;
+        confetti.height = window.innerHeight;
+        createParticles();
+      });
+    }
+
+    window.onload = () => {
+      initConfetti();
+      const song = document.getElementById("celebration-song");
+      song.play().catch(() => {
+        console.log("Autoplay blocked. User interaction required.");
+      });
+    };
+  </script>
+</body>
+</html>
